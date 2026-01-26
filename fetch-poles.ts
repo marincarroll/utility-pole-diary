@@ -15,6 +15,11 @@ type NewtonGisPole = {
     };
 };
 
+function parseCoordinate( coordinate: Number) {
+    const rounded = coordinate.toFixed(6);
+    return parseFloat(rounded);
+}
+
 async function fetchPoles() {
     const newtonGISResponse = await fetch(NEWTON_GIS_ENDPOINT);
     const newtonGISJSON = await newtonGISResponse.json();
@@ -26,8 +31,8 @@ async function fetchPoles() {
              id: pole.attributes.OBJECTID,
              streetName,
              streetNum: pole.attributes.NUM,
-             latitude: parseFloat( pole.geometry.x.toFixed(6) ),
-             longitude: parseFloat( pole.geometry.y.toFixed(6) ),
+             latitude: parseCoordinate( pole.geometry.x ),
+             longitude: parseCoordinate( pole.geometry.y ),
          }
     });
 }
