@@ -48,11 +48,18 @@ async function fetchPoles() {
 async function main() {
     const poles = await fetchPoles();
 
-    const deletedPoles = await prisma.utilityPole.deleteMany({});
-    console.log(`Deleted ${deletedPoles.count} poles` );
-
-    const createdPoles = await prisma.utilityPole.createMany({data: poles});
-    console.log(`Created ${createdPoles.count} poles` );
+  //  const deletedPoles = await prisma.utilityPole.deleteMany({});
+  //  console.log(`Deleted ${deletedPoles.count} poles` );
+    try {
+        const createdPoles = await prisma.utilityPole.createMany({data: poles});
+        console.log(`Created ${createdPoles.count} poles.` );
+    } catch (err) {
+        if( err.code === 'P2002') {
+            console.error('One or more poles already exist in the database.');
+        } else {
+            console.error(err);
+        }
+    }
 }
 
 
