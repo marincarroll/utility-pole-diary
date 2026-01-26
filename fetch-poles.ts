@@ -20,42 +20,28 @@ async function fetchPoles() {
     const newtonGISJSON = await newtonGISResponse.json();
 
     return newtonGISJSON.features.map((pole: NewtonGisPole ) => {
+        let streetName = pole.attributes.STREET;
+        streetName = streetName.substring(0, 1) + streetName.substring(1).toLowerCase();
          return {
              id: pole.attributes.OBJECTID,
-             streetName: pole.attributes.STREET,
+             streetName,
              streetNum: pole.attributes.NUM,
-             latitude: pole.geometry.x,
-             longitude: pole.geometry.y,
+             latitude: parseFloat( pole.geometry.x.toFixed(6) ),
+             longitude: parseFloat( pole.geometry.y.toFixed(6) ),
          }
     });
 }
 
-// TODO this only creates/updates poles. What if one is removed? I don't want to delete the record from the DB because
+// TODO this only creates poles. What if one is removed? I don't want to delete the record from the DB because
 //  part of this project is to archive poles before they are removed.
 async function main() {
     const poles = await fetchPoles();
 
-    try {
-        const transaction = await prisma.$transaction(
-            async () => poles.map( ( pole ) => {
-                return prisma.utilityPole.upsert({
-                    where: {
-                        id: pole.id,
-                    },
-                    create: pole,
-                    update: {
-                        streetName: pole.streetName,
-                        streetNum: pole.streetNum,
-                        latitude: pole.latitude,
-                        longitude: pole.longitude,
-                    },
-                });
-            }),
-        );
-        console.log(`Updated ${transaction.length} records`);
-    } catch (error) {
-        console.error('Transaction failed:', error);
-    }
+    const deletedPoles = await prisma.utilityPole.deleteMany({});
+    console.log(`Deleted ${deletedPoles.count} poles` );
+
+    const createdPoles = await prisma.utilityPole.createMany({data: poles});
+    console.log(`Created ${createdPoles.count} poles` );
 }
 
 main()
