@@ -15,8 +15,7 @@ datasource db {
 
 model UtilityPole {
     id Int @id
-    streetNum Int
-    streetName String
+    address String
     latitude Float
     longitude Float
 }

@@ -20,17 +20,23 @@ function parseCoordinate( coordinate: Number) {
     return parseFloat(rounded);
 }
 
+function parseAddress(streetNum: number, streetName: string) {
+    const titleCaseName = streetName.toLowerCase().replace(/(^\w|\s\w)/g, (firstLetter) => {
+        return firstLetter.toUpperCase()
+    });
+
+    return `${streetNum} ${titleCaseName}`;
+}
+
 async function fetchPoles() {
     const newtonGISResponse = await fetch(NEWTON_GIS_ENDPOINT);
     const newtonGISJSON = await newtonGISResponse.json();
 
     return newtonGISJSON.features.map((pole: NewtonGisPole ) => {
-        let streetName = pole.attributes.STREET;
-        streetName = streetName.substring(0, 1) + streetName.substring(1).toLowerCase();
+
          return {
              id: pole.attributes.OBJECTID,
-             streetName,
-             streetNum: pole.attributes.NUM,
+             address: parseAddress(pole.attributes.NUM, pole.attributes.STREET ),
              latitude: parseCoordinate( pole.geometry.x ),
              longitude: parseCoordinate( pole.geometry.y ),
          }
@@ -48,6 +54,7 @@ async function main() {
     const createdPoles = await prisma.utilityPole.createMany({data: poles});
     console.log(`Created ${createdPoles.count} poles` );
 }
+
 
 main()
     .then(async () => {
