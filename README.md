@@ -23,10 +23,10 @@ npx prisma generate
 ### Load utility poles into database
 To fetch utility pole data from Newton's GIS endpoint:
 ```
-npx tsx ./fetch-poles.ts  
+tsx fetch-poles.ts  
 ```
 
 ### Start server
 ```
-node index.js
+tsx index.ts
 ```
