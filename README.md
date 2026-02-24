@@ -1,4 +1,4 @@
-## Setup
+## Getting Started
 ### Install dependencies
 ```
 npm install
@@ -28,5 +28,5 @@ tsx fetch-poles.ts
 
 ### Start server
 ```
-tsx index.ts
+npm run dev
 ```
