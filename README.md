@@ -29,5 +29,5 @@ tsx fetch-poles.ts
 
 ### Start server
 ```
-npm run dev
+npm run start
 ```
