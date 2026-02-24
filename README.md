@@ -1,11 +1,12 @@
-## Getting Started
+### Starting the backend
 ### Install dependencies
 ```
+cd server
 npm install
 ```
 
 ### Set up .env
-- Create a new .env file
+- Create a new .env file in the 'server' directory
 - Generate a new Prisma connection string
 - Add the following lines to .env:
   ```
