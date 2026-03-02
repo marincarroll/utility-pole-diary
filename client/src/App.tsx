@@ -1,20 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import './App.css';
+import Map from "./Map";
 
 function App() {
-  const apiCall = () => {
-    axios.get('http://localhost:8080/poles').then((response) => {
-      //this console.log will be in our frontend console
-      console.log(response.data);
-    })
-  };
+
 
   return (
     <div className="App">
-      <header className="App-header">
-        <button onClick={apiCall}>Make API Call</button>
-      </header>
+      <Map/>
     </div>
   );
 }
