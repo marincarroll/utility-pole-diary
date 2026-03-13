@@ -9,50 +9,68 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PolesPoleIdRouteImport } from './routes/poles/$poleId'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as PolePoleIdRouteImport } from './routes/pole/$poleId'
 
-const PolesPoleIdRoute = PolesPoleIdRouteImport.update({
-  id: '/poles/$poleId',
-  path: '/poles/$poleId',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PolePoleIdRoute = PolePoleIdRouteImport.update({
+  id: '/pole/$poleId',
+  path: '/pole/$poleId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/poles/$poleId': typeof PolesPoleIdRoute
+  '/': typeof IndexRoute
+  '/pole/$poleId': typeof PolePoleIdRoute
 }
 export interface FileRoutesByTo {
-  '/poles/$poleId': typeof PolesPoleIdRoute
+  '/': typeof IndexRoute
+  '/pole/$poleId': typeof PolePoleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/poles/$poleId': typeof PolesPoleIdRoute
+  '/': typeof IndexRoute
+  '/pole/$poleId': typeof PolePoleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/poles/$poleId'
+  fullPaths: '/' | '/pole/$poleId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/poles/$poleId'
-  id: '__root__' | '/poles/$poleId'
+  to: '/' | '/pole/$poleId'
+  id: '__root__' | '/' | '/pole/$poleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  PolesPoleIdRoute: typeof PolesPoleIdRoute
+  IndexRoute: typeof IndexRoute
+  PolePoleIdRoute: typeof PolePoleIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/poles/$poleId': {
-      id: '/poles/$poleId'
-      path: '/poles/$poleId'
-      fullPath: '/poles/$poleId'
-      preLoaderRoute: typeof PolesPoleIdRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pole/$poleId': {
+      id: '/pole/$poleId'
+      path: '/pole/$poleId'
+      fullPath: '/pole/$poleId'
+      preLoaderRoute: typeof PolePoleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  PolesPoleIdRoute: PolesPoleIdRoute,
+  IndexRoute: IndexRoute,
+  PolePoleIdRoute: PolePoleIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
