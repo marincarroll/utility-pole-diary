@@ -2,13 +2,15 @@ import React, {useEffect, useRef, useState} from "react";
 import {MapContainer, Marker, TileLayer} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
-
+import { useNavigate } from '@tanstack/react-router';
 
 const Map = () => {
     const mapRef = useRef(null);
     const [poles, setPoles] = useState([]);
 
-    useEffect(()=> {
+  const navigate = useNavigate();
+
+  useEffect(()=> {
         axios.get('http://localhost:8080/poles').then((response) => {
             //this console.log will be in our frontend console
             setPoles( response.data );
@@ -23,7 +25,15 @@ const Map = () => {
             style={{ height: '100vh', width: '100vw'}}
         >
             {poles.map( pole => (
-                <Marker position={[ pole.longitude, pole.latitude]}/>
+                <Marker
+                    position={[ pole.longitude, pole.latitude]}
+                    key={pole.id}
+                    eventHandlers={{
+                      click: (e) => {
+                        navigate({ to: '/pole/$poleId', params: { poleId: pole.id } });
+                      },
+                    }}
+                />
             ))}
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

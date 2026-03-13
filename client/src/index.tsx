@@ -2,33 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {
-    createRootRoute,
-    createRoute,
     createRouter,
     RouterProvider
 } from "@tanstack/react-router";
-import Map from "./Map";
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
-const rootRoute = createRootRoute({
-    component: () => {
-        return (
-            <div>
-                <Map/>
-                <TanStackRouterDevtools/>
-            </div>
-        )
-    }
-})
 
-const indexRoute = createRoute({
-    getParentRoute: () => rootRoute,
-    path: '/',
-})
-
-const routeTree = rootRoute.addChildren([
-    indexRoute,
-])
+import { routeTree } from './routeTree.gen';
 
 const router = createRouter({
     routeTree,

@@ -21,8 +21,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "generate-routes": "tsr generate",
+    "watch-routes": "tsr watch",
+    "start": "npm run generate-routes && react-scripts start",
+    "build": "npm run watch-routes && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -45,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "@tanstack/react-router-devtools": "^1.166.7"
+    "@tanstack/react-router-devtools": "^1.166.7",
+    "@tanstack/router-cli": "^1.166.7"
   }
 }
