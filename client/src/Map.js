@@ -9,7 +9,7 @@ const Map = () => {
     const [poles, setPoles] = useState([]);
 
     useEffect(()=> {
-        axios.get('http://localhost:8080/poles').then((response) => {
+        axios.get('https://localhost:8080/poles').then((response) => {
             //this console.log will be in our frontend console
             setPoles( response.data );
         })
