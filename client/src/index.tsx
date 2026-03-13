@@ -1,19 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {
+    createRootRoute,
+    createRoute,
+    createRouter,
+    RouterProvider
+} from "@tanstack/react-router";
+import Map from "./Map";
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+
+const rootRoute = createRootRoute({
+    component: () => {
+        return (
+            <div>
+                <Map/>
+                <TanStackRouterDevtools/>
+            </div>
+        )
+    }
+})
+
+const indexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+})
+
+const routeTree = rootRoute.addChildren([
+    indexRoute,
+])
+
+const router = createRouter({
+    routeTree,
+    //defaultPreload: 'intent',
+    //defaultStaleTime: 5000,
+    //scrollRestoration: true,
+})
+
+// Register things for typesafety
+declare module '@tanstack/react-router' {
+    interface Register {
+        router: typeof router
+    }
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
+      <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
